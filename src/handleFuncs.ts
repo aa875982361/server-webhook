@@ -24,7 +24,7 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
     console.log("projectPath", projectPath);
     let res = {
         statusCode: 200,
-        data: "success"
+        data: "重启成功"
     }
     try {
         // 执行到目录下
