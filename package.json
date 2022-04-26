@@ -1,0 +1,12 @@
+{
+  "name": "server-webhook",
+  "version": "1.0.0",
+  "description": "## 项目介绍 在项目代码提交之后，自动部署项目",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
