@@ -30,8 +30,10 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
         // 执行到目录下
         const cdCommand = `cd ${projectPath}`
         await execShellAndHandleError(cdCommand)
+        // 查看当前位置
+        await execShellAndHandleError("pwd")
         /** 拉取最新代码 */
-        const gitPullCommand = `git checkout . && git pull`
+        const gitPullCommand = `git fetch ssh`
         await execShellAndHandleError(gitPullCommand)
     
         /** 启动项目 */
@@ -70,6 +72,8 @@ async function execShellAndHandleError(command: string, options?: ExecOptions): 
  */
 function execShell(command: string, options?: ExecOptions): Promise<CommandResult> {
     return new Promise((resolve, reject) => {
+        console.log("运行命令");
+        
         exec(command, options, (error, stdout, stderr) => {
             resolve({
                 error: error?.message || "",
