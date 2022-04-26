@@ -72,7 +72,7 @@ async function execShellAndHandleError(command: string, options?: ExecOptions): 
  */
 function execShell(command: string, options?: ExecOptions): Promise<CommandResult> {
     return new Promise((resolve, reject) => {
-        console.log("运行命令");
+        console.log("运行命令", command);
         
         exec(command, options, (error, stdout, stderr) => {
             resolve({
