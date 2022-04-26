@@ -40,7 +40,8 @@ app.get('/webhook/:project', async function(req, res){
     if(data && typeof data === "object"){
         sendStr = JSON.stringify(data)
     }
-    res.status(statusCode).end(sendStr);
+    res.header("Content-Type", "application/json; charset=utf-8")
+    res.status(statusCode).end(sendStr, "utf-8");
 })
 
 app.listen(port, () => {
