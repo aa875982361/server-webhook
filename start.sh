@@ -1,5 +1,5 @@
 tsc
-NAME=$1;
+NAME=${2:-server-webhook};
 npx pm2 describe $NAME > /dev/null
 RUNNING=$?
 if [ "${RUNNING}" -ne 0 ]; then
