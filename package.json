@@ -4,12 +4,24 @@
   "description": "## 项目介绍 在项目代码提交之后，自动部署项目",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "restart": "./restart.sh webhook:5001",
+    "start": "tsc && pm2 start ./dist/index.js --name webhook:5001",
+    "_stop": "pm2 delete webhook:5001"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.25",
+    "pm2": "^5.2.0",
+    "request": "^2.88.2",
+    "ts-node": "^10.7.0"
+  },
   "dependencies": {
-    "express": "^4.18.0"
+    "body-parser": "^1.20.0",
+    "express": "^4.17.3",
+    "tsc": "^2.0.4",
+    "typescript": "^4.6.3"
   }
 }
