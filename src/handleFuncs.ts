@@ -26,22 +26,38 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
         statusCode: 200,
         data: "success"
     }
-    // 执行到目录下
-    const cdCommand = `cd ${projectPath}`
-    const cdRes = await execShell(cdCommand)
-    if(cdRes.error){
-        console.error(`执行命令失败，具体错误`, cdRes.error)
+    try {
+        // 执行到目录下
+        const cdCommand = `cd ${projectPath}`
+        await execShellAndHandleError(cdCommand)
+        /** 拉取最新代码 */
+        const gitPullCommand = `git checkout . && git pull`
+        await execShellAndHandleError(gitPullCommand)
+    
+        /** 启动项目 */
+        const restartCommand = `./start.sh ${projectName}`
+        await execShellAndHandleError(restartCommand)
+    } catch (error: any) {
         res.statusCode = 500
-        res.data = "处理命令失败 cd"
-        return res
+        res.data = error
     }
-    const restartCommand = `./start.sh ${projectName}`
-    const restartCommandRes = await execShell(restartCommand)
-    if(restartCommandRes.error){
-        console.error(`执行命令失败，具体错误`, restartCommandRes.error)
-        res.statusCode = 500
-        res.data = "处理命令失败 start"
-        return res
+    return res
+}
+
+/**
+ * 执行脚本并处理错误
+ * @param command 
+ * @param options 
+ */
+async function execShellAndHandleError(command: string, options?: ExecOptions): Promise<HandleResult> {
+    let res = {
+        statusCode: 200,
+        data: "success"
+    }
+    const gitPullCommandRes = await execShell(command, options)
+    if(gitPullCommandRes.error){
+        console.error(`执行命令失败，具体错误`, gitPullCommandRes.error)
+        throw `处理命令失败 ${command}`
     }
     return res
 }
