@@ -29,16 +29,13 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
     try {
         // 执行到目录下
         const cdCommand = `cd ${projectPath}`
-        await execShellAndHandleError(cdCommand)
-        // 查看当前位置
-        await execShellAndHandleError("pwd")
         /** 拉取最新代码 */
-        const gitPullCommand = `git fetch ssh`
-        await execShellAndHandleError(gitPullCommand)
+        const gitPullCommand = `${cdCommand} && git fetch ssh`
+        await execShellAndHandleError(gitPullCommand, "拉取最新代码失败")
     
         /** 启动项目 */
-        const restartCommand = `./start.sh ${projectName}`
-        await execShellAndHandleError(restartCommand)
+        const restartCommand = `${cdCommand} && ./start.sh ${projectName}`
+        await execShellAndHandleError(restartCommand, "启动命令运行失败")
     } catch (error: any) {
         res.statusCode = 500
         res.data = error
@@ -51,7 +48,7 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
  * @param command 
  * @param options 
  */
-async function execShellAndHandleError(command: string, options?: ExecOptions): Promise<HandleResult> {
+async function execShellAndHandleError(command: string, errString: string, options?: ExecOptions): Promise<HandleResult> {
     let res = {
         statusCode: 200,
         data: "success"
@@ -59,7 +56,7 @@ async function execShellAndHandleError(command: string, options?: ExecOptions): 
     const gitPullCommandRes = await execShell(command, options)
     if(gitPullCommandRes.error){
         console.error(`执行命令失败，具体错误`, gitPullCommandRes.error)
-        throw `处理命令失败 ${command}`
+        throw errString
     }
     return res
 }
@@ -75,6 +72,7 @@ function execShell(command: string, options?: ExecOptions): Promise<CommandResul
         console.log("运行命令", command);
         
         exec(command, options, (error, stdout, stderr) => {
+            console.log("命令的运行结果为", command, stdout, stderr)
             resolve({
                 error: error?.message || "",
                 stderr: stderr.toString(),
