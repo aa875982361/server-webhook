@@ -24,7 +24,12 @@ app.use(bodyParser.json())
 app.get('/webhook/:project', async function(req, res){
     const currentRequestId = requestId++
     // 请求project名
-    const projectName = req.params.project 
+    const projectName = req.params.project || ""
+    // 如果没传这个字段
+    if(!projectName){
+        res.status(400).end("请传入项目名")
+        return
+    }
     // 具体项目路径
     const projectPath = path.join(rootPath, projectName)
     console.log("开始处理 currentRequestId ", currentRequestId, projectName);
