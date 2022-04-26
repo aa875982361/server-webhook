@@ -34,7 +34,7 @@ app.get('/webhook/:project', async function(req, res){
     const projectPath = path.join(rootPath, projectName)
     console.log("开始处理 currentRequestId ", currentRequestId, projectName);
     // 处理项目hook
-    const { statusCode, data } = await handleWebHook(projectPath)
+    const { statusCode, data } = await handleWebHook(projectPath, projectName)
     let sendStr = data
     // 发送到客户端的数据
     if(data && typeof data === "object"){
