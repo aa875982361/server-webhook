@@ -4,8 +4,9 @@
   "description": "## 项目介绍 在项目代码提交之后，自动部署项目",
   "main": "index.js",
   "scripts": {
+    "prestart": "tsc",
     "restart": "./restart.sh webhook:5001",
-    "start": "tsc && pm2 start ./dist/index.js --name webhook:5001",
+    "start": "node ./dist/index.js",
     "_stop": "pm2 delete webhook:5001"
   },
   "keywords": [],
