@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "prestart": "tsc",
-    "restart": "./restart.sh webhook:5001",
+    "restart": "./start.sh server-webhook",
     "start": "node ./dist/index.js",
-    "_stop": "pm2 delete webhook:5001"
+    "_stop": "pm2 delete server-webhook"
   },
   "keywords": [],
   "author": "",
