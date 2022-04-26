@@ -1,4 +1,4 @@
-tsc
+npx tsc
 NAME=${1:-server-webhook};
 npx pm2 describe $NAME > /dev/null
 RUNNING=$?
