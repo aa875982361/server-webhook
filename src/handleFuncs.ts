@@ -30,7 +30,7 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
         // 执行到目录下
         const cdCommand = `cd ${projectPath}`
         /** 拉取最新代码 */
-        const gitPullCommand = `${cdCommand} && git fetch`
+        const gitPullCommand = `${cdCommand} && git pull`
         await execShellAndHandleError(gitPullCommand, "拉取最新代码失败")
     
         /** 启动项目 */
