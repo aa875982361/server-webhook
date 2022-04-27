@@ -58,7 +58,7 @@ async function execShellAndHandleError(command: string, errString: string, retry
         console.error(`执行命令失败，具体错误`, gitPullCommandRes.error)
         if(retryNum > 0){
             console.log("重试命令", command);
-            return execShellAndHandleError(command, errString, retryNum--, options)
+            return execShellAndHandleError(command, errString, retryNum - 1, options)
         }
         throw errString
     }
