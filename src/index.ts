@@ -24,7 +24,8 @@ console.log("rootPath", rootPath);
 app.use(bodyParser.json())
 // 增加一个路由
 app.all('/webhook/:project', async function(req, res){
-    // console.log("res.body", req.body);
+    console.log("res.headers", req.headers);
+    console.log("res.body", req.body);
     const currentRequestId = requestId++
     // 请求project名
     let projectName = req.params.project || ""
