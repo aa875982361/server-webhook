@@ -31,7 +31,7 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
         const cdCommand = `cd ${projectPath}`
         /** 拉取最新代码 */
         const gitPullCommand = `${cdCommand} && git pull`
-        await execShellAndHandleError(gitPullCommand, "拉取最新代码失败")
+        await execShellAndHandleError(gitPullCommand, "拉取最新代码失败", 3)
     
         /** 启动项目 */
         const restartCommand = `${cdCommand} && ./start.sh ${projectName}`
@@ -48,7 +48,7 @@ export async function handleWebHook(projectPath: string, projectName?: string): 
  * @param command 
  * @param options 
  */
-async function execShellAndHandleError(command: string, errString: string, options?: ExecOptions): Promise<HandleResult> {
+async function execShellAndHandleError(command: string, errString: string, retryNum:number = 0, options?: ExecOptions): Promise<HandleResult> {
     let res = {
         statusCode: 200,
         data: "success"
@@ -56,6 +56,10 @@ async function execShellAndHandleError(command: string, errString: string, optio
     const gitPullCommandRes = await execShell(command, options)
     if(gitPullCommandRes.error){
         console.error(`执行命令失败，具体错误`, gitPullCommandRes.error)
+        if(retryNum > 0){
+            console.log("重试命令", command);
+            return execShellAndHandleError(command, errString, retryNum--, options)
+        }
         throw errString
     }
     return res
