@@ -27,7 +27,7 @@ app.all('/webhook/:project', async function(req, res){
     console.log("res.body", req.body);
     const currentRequestId = requestId++
     // 请求project名
-    const projectName = req.params.project || ""
+    let projectName = req.params.project || ""
     // 如果没传这个字段
     if(!projectName){
         res.status(400).end("请传入项目名")
@@ -39,6 +39,8 @@ app.all('/webhook/:project', async function(req, res){
         // const {}
         console.log("secretKey", secretKey);
     }
+    // 对projectName 进行过滤， 防止拼接攻击, 只保留字符
+    projectName = projectName.replace(/[^0-9a-zA-Z_\-]/g, "")
     // 具体项目路径
     const projectPath = path.join(rootPath, projectName)
     console.log("开始处理 currentRequestId ", currentRequestId, projectName);
