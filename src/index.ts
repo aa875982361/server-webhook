@@ -37,6 +37,7 @@ app.all('/webhook/:project', async function(req, res){
     if(secretKey){
         // post 在body get 在query
         // const {}
+        console.log("secretKey", secretKey);
     }
     // 具体项目路径
     const projectPath = path.join(rootPath, projectName)
