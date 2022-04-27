@@ -7,6 +7,8 @@ import * as path from "path"
 import { handleWebHook } from "./handleFuncs";
 // 端口
 const port = "5001"
+// 接口访问密码
+const secretKey = process.env.WEBHOOK_KEY || ""
 const app = express();
 // 处理的请求id
 let requestId = 0
@@ -21,7 +23,8 @@ console.log("rootPath", rootPath);
 // 解析body的数据
 app.use(bodyParser.json())
 // 增加一个路由
-app.get('/webhook/:project', async function(req, res){
+app.all('/webhook/:project', async function(req, res){
+    console.log("res.body", req.body);
     const currentRequestId = requestId++
     // 请求project名
     const projectName = req.params.project || ""
@@ -29,6 +32,11 @@ app.get('/webhook/:project', async function(req, res){
     if(!projectName){
         res.status(400).end("请传入项目名")
         return
+    }
+    // 存在秘钥就需要判断秘钥
+    if(secretKey){
+        // post 在body get 在query
+        // const {}
     }
     // 具体项目路径
     const projectPath = path.join(rootPath, projectName)
